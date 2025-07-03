@@ -1,25 +1,35 @@
 package com.shorturl.shorturl.controller;
 
-import com.shorturl.shorturl.model.ShortUrl;
 import com.shorturl.shorturl.service.ShortUrlService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+/**
+ * Controller responsible for handling redirection based on short URLs.
+ */
 @RestController
 public class RedirectController {
 
-    private final ShortUrlService service;
 
+
+    /**
+     * Constructor getting service.
+     *
+     * @param service the service used to retrieve original URLs
+     */
+    private final ShortUrlService service;
     public RedirectController(ShortUrlService service) {
         this.service = service;
     }
 
+    /**
+     * Redirects the user from a short code to the original URL.
+     *
+     * @param shortCode the short code used in the shortened URL
+     * @return a 302 redirect to the original URL, or 404 if not found
+     */
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
         return service.getByShortCode(shortCode)
